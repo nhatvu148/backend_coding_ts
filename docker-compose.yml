@@ -9,7 +9,13 @@ services:
       context: .
     depends_on:
       - dev-db
-    # environment:
+    environment:
+      - DB_HOST=dev-db
+      - DB_PORT=5432
+      - DB_USERNAME=test_user
+      - DB_PASSWORD=123456789
+      - DB_NAME=typeorm
+      - PORT=8080
     ports:
       - "8080:8080"
     volumes:
