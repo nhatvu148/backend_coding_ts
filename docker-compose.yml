@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  dev-srv:
+    container_name: dev-srv
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: .
+    depends_on:
+      - dev-db
+    # environment:
+    ports:
+      - "8080:8080"
+    volumes:
+      - /app/node_modules
+      - .:/app
+    networks:
+      - backend_network
+
+  dev-db:
+    container_name: dev-db
+    image: postgres:latest
+    ports:
+      - 5457:5432
+    volumes:
+      - postgresql-data:/var/lib/postgresql:Z
+    environment:
+      - POSTGRES_USER=test_user
+      - POSTGRES_PASSWORD=123456789
+      - POSTGRES_DB=typeorm
+    networks:
+      - backend_network
+
+  pgadmin4:
+    container_name: pgadmin4
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=test_user@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=123456789
+    ports:
+      - "8989:80"
+    networks:
+      - backend_network
+
+networks:
+  backend_network:
+
+volumes:
+  postgresql-data:
