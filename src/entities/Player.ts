@@ -5,15 +5,14 @@ import {
   UpdateDateColumn,
   ManyToMany,
   JoinTable,
+  BaseEntity,
+  PrimaryColumn,
 } from "typeorm";
-import { Base } from "./utils/Base";
 import { Sport } from "./Sport";
 
 @Entity("player")
-export class Player extends Base {
-  @Column({
-    nullable: false,
-  })
+export class Player extends BaseEntity {
+  @PrimaryColumn()
   email: string;
 
   @ManyToMany((type) => Sport, {
@@ -23,11 +22,11 @@ export class Player extends Base {
     name: "players_sports",
     joinColumn: {
       name: "player",
-      referencedColumnName: "id",
+      referencedColumnName: "email",
     },
     inverseJoinColumn: {
       name: "sport",
-      referencedColumnName: "id",
+      referencedColumnName: "name",
     },
   })
   sports: Sport[];

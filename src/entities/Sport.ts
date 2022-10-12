@@ -4,15 +4,14 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToMany,
+  BaseEntity,
+  PrimaryColumn,
 } from "typeorm";
-import { Base } from "./utils/Base";
 import { Player } from "./Player";
 
 @Entity("sport")
-export class Sport extends Base {
-  @Column({
-    nullable: false,
-  })
+export class Sport extends BaseEntity {
+  @PrimaryColumn()
   name: string;
 
   @ManyToMany((type) => Player, {
