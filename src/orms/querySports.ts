@@ -13,4 +13,12 @@ const querySportsWithPlayer = async () => {
   console.log(sports);
 };
 
+const querySports = async () => {
+  await createConnection();
+  const sports = await Sport.find();
+  // SELECT * FROM sport
+
+  console.log(sports);
+};
+
 querySportsWithPlayer();
