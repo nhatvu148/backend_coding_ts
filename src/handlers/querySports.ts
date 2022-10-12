@@ -12,8 +12,7 @@ export const querySportsWithMultiplePlayers = async () => {
     FROM players_sports
     GROUP BY sport) AS TB1
     WHERE TB1.count > 0;
-  `,
-    []
+  `
   );
   // SELECT sport FROM
   // (SELECT sport, Count(DISTINCT(player)) AS count
@@ -26,7 +25,7 @@ export const querySportsWithMultiplePlayers = async () => {
 
 export const querySportsWithPlayer = async () => {
   const player = await createQueryBuilder("player")
-    .select("player.id")
+    .select("player.name")
     .from(Player, "player")
     .where("player.email = 'player1@gmail.com'")
     .getOne();
@@ -37,15 +36,15 @@ export const querySportsWithPlayer = async () => {
     .innerJoin(
       "players_sports",
       "players_sports",
-      "players_sports.sport = sport.id"
+      "players_sports.sport = sport.name"
     )
-    .where("players_sports.player = :playerId", {
-      playerId: player?.id,
+    .where("players_sports.player = :playerEmail", {
+      playerEmail: player?.email,
     })
     .getMany();
   // SELECT sport.* FROM sport
-  // INNER JOIN players_sports ON players_sports.sport = sport.id
-  // WHERE players_sports.player = (SELECT id FROM player WHERE player.email = 'player1@gmail.com');
+  // INNER JOIN players_sports ON players_sports.sport = sport.name
+  // WHERE players_sports.player = (SELECT name FROM player WHERE player.email = 'player1@gmail.com');
 
   return sports;
 };
@@ -53,23 +52,28 @@ export const querySportsWithPlayer = async () => {
 export const querySportsWithNoPlayers = async () => {
   const entityManager = getManager();
 
+  const allSports = await entityManager.query(
+    `
+  SELECT id, name FROM sport;
+  `
+  );
+
   const sports = await entityManager.query(
     `
   SELECT sport FROM
     (SELECT sport, Count(DISTINCT(player)) AS count
     FROM players_sports
     GROUP BY sport) AS TB1
-    WHERE TB1.count = 0;
-  `,
-    []
+    WHERE TB1.count > 0;
+  `
   );
   // SELECT sport FROM
   // (SELECT sport, Count(DISTINCT(player)) AS count
   // FROM players_sports
   // GROUP BY sport) AS TB1
-  // WHERE TB1.count = 0;
+  // WHERE TB1.count > 0;
 
-  return sports;
+  return { allSports, sports };
 };
 
 export const querySportWithPlayersByName = async (sportName: string) => {
@@ -78,14 +82,14 @@ export const querySportWithPlayersByName = async (sportName: string) => {
   const sports = await entityManager.query(
     `
     SELECT sport.name, email FROM sport
-    INNER JOIN players_sports ON players_sports.sport = sport.id
-    INNER JOIN player ON players_sports.player = player.id
+    INNER JOIN players_sports ON players_sports.sport = sport.name
+    INNER JOIN player ON players_sports.player = player.email
     WHERE sport.name = '${sportName}';
   `
   );
   // SELECT sport.name, email FROM sport
-  // INNER JOIN players_sports ON players_sports.sport = sport.id
-  // INNER JOIN player ON players_sports.player = player.id
+  // INNER JOIN players_sports ON players_sports.sport = sport.name
+  // INNER JOIN player ON players_sports.player = player.email
   // WHERE sport.name = 'Soccer';
 
   return sports;

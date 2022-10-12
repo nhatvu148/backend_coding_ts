@@ -16,7 +16,7 @@ describe("Test Queries", () => {
 
   it("Test querySportsWithMultiplePlayers()", async () => {
     const results = await querySportsWithMultiplePlayers();
-    expect(results).toEqual([{ sport: 1 }, { sport: 2 }]);
+    expect(results).toEqual([{ sport: "Soccer" }, { sport: "Volleyball" }]);
   });
 
   // it("Test querySportsWithNoPlayers()", async () => {
@@ -27,7 +27,6 @@ describe("Test Queries", () => {
 
   it("Test querySportWithPlayersByName()", async () => {
     const results = await querySportWithPlayersByName("Soccer");
-    console.log(results);
     expect(results).toEqual([
       {
         email: "player1@gmail.com",

@@ -8,17 +8,17 @@ import { getSportsRouter } from "./routes/get_sports";
 const app: express.Application = express();
 
 const main = async () => {
-    await createConnection({
-      type: "postgres",
-      host: "dev-db",
-      port: 5432,
-      username: "test_user",
-      password: "123456789",
-      database: "typeorm",
-      entities: [Player, Sport],
-      synchronize: true,
-    });
-    console.log("Connected to Postgres");
+  await createConnection({
+    type: "postgres",
+    host: "dev-db",
+    port: 5432,
+    username: "test_user",
+    password: "123456789",
+    database: "typeorm",
+    entities: [Player, Sport],
+    synchronize: true,
+  });
+  console.log("Connected to Postgres");
 
   app.use(express.json());
 
