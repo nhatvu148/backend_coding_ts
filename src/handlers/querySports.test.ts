@@ -16,14 +16,13 @@ describe("Test Queries", () => {
 
   it("Test querySportsWithMultiplePlayers()", async () => {
     const results = await querySportsWithMultiplePlayers();
-    expect(results).toEqual([{ sport: "Soccer" }, { sport: "Volleyball" }]);
+    expect(results).toEqual(["Soccer", "Volleyball"]);
   });
 
-  // it("Test querySportsWithNoPlayers()", async () => {
-  //   const results = await querySportsWithNoPlayers();
-  //   console.log(results);
-  //   expect(results).toEqual([{ sport: 1 }, { sport: 2 }]);
-  // });
+  it("Test querySportsWithNoPlayers()", async () => {
+    const results = await querySportsWithNoPlayers();
+    expect(results).toEqual(["Swimming"]);
+  });
 
   it("Test querySportWithPlayersByName()", async () => {
     const results = await querySportWithPlayersByName("Soccer");

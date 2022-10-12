@@ -20,7 +20,7 @@ export const querySportsWithMultiplePlayers = async () => {
   // GROUP BY sport) AS TB1
   // WHERE TB1.count > 0;
 
-  return sports;
+  return sports.map((a: any) => a.sport);
 };
 
 export const querySportsWithPlayer = async () => {
@@ -54,7 +54,7 @@ export const querySportsWithNoPlayers = async () => {
 
   const allSports = await entityManager.query(
     `
-  SELECT id, name FROM sport;
+  SELECT name FROM sport;
   `
   );
 
@@ -73,7 +73,10 @@ export const querySportsWithNoPlayers = async () => {
   // GROUP BY sport) AS TB1
   // WHERE TB1.count > 0;
 
-  return { allSports, sports };
+  const asp = allSports.map((a: any) => a.name);
+  const s = sports.map((a: any) => a.sport);
+
+  return asp.filter((x: any) => !s.includes(x));
 };
 
 export const querySportWithPlayersByName = async (sportName: string) => {
